@@ -1,5 +1,5 @@
-resource "aws_security_group" "sg-c72742dd"{
-name = "sg-c72742dd"
+resource "aws_security_group" "sg_22"{
+name = "sg_22"
   vpc_id = "${aws_vpc.myvpc.id}"
 
 # SSH access from the VPC
@@ -24,17 +24,17 @@ name = "sg-c72742dd"
 
 
 
-resource "aws_key_pair" "newkey"{
-  key_name = "publickey"
-  public_key = "/home/lenovo/Downloads/newkey.pem"
+resource "aws_key_pair" "ec2key"{
+  key_name = "mykey"
+  public_key = "ssh-rsa publickey"
 }
 
 resource "aws_instance" "myinstance" {
   ami           = "ami-0747bdcabd34c712a"
   instance_type = "t2.micro"
-  subnet_id = "${aws_subnet.privatesubnet1.id}"
-  vpc_security_group_ids = "${aws_security_group.sg-c72742dd.id}"
-  key_name = "${aws_key_pair.newkey.public_key}"
+  subnet_id = "${aws_subnet.publicsubnet1.id}"
+  vpc_security_group_ids = "${aws_security_group.sg_22}"
+  key_name = "${aws_key_pair.ec2key.public_key}"
 
 
 
