@@ -18,7 +18,7 @@ name = "sg_22"
 
 }
   tags = {
-   Name = "port"
+   Name = "ssh connection"
   }
 }
 
@@ -29,7 +29,7 @@ resource "aws_key_pair" "ec2key"{
   public_key = "ssh-rsa publickey"
 }
 
-resource "aws_instance" "myinstance" {
+resource "aws_instance" "testinstance" {
   ami           = "ami-0747bdcabd34c712a"
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.publicsubnet1.id}"
@@ -44,6 +44,6 @@ resource "aws_instance" "myinstance" {
 }
 
 resource "aws_eip" "ip" {
-  instance = "${aws_instance.myinstance.id}"
+  instance = "${aws_instance.testinstance.id}"
 }
 
