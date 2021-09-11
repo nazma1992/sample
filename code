@@ -1,0 +1,49 @@
+resource "aws_security_group" "sg-c72742dd"{
+name = "sg-c72742dd"
+  vpc_id = "${aws_vpc.myvpc.id}"
+
+# SSH access from the VPC
+  ingress {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+
+}
+  tags = {
+   Name = "port"
+  }
+}
+
+
+
+resource "aws_key_pair" "newkey"{
+  key_name = "publickey"
+  public_key = "/home/lenovo/Downloads/newkey.pem"
+}
+
+resource "aws_instance" "myinstance" {
+  ami           = "ami-0747bdcabd34c712a"
+  instance_type = "t2.micro"
+  subnet_id = "${aws_subnet.privatesubnet1.id}"
+  vpc_security_group_ids = "${aws_security_group.sg-c72742dd.id}"
+  key_name = "${aws_key_pair.newkey.public_key}"
+
+
+
+  tags =  {
+   Name = "insta"
+        }
+}
+
+resource "aws_eip" "ip" {
+  instance = "${aws_instance.myinstance.id}"
+}
+
